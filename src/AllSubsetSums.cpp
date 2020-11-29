@@ -2,7 +2,6 @@
 #include <cmath>
 #include <set>
 #include <vector>
-#define todo 100050
 using namespace std;
 
 struct solutionElement
@@ -41,9 +40,9 @@ vector<int> OP2(vector<int> A, vector<int> B, int u) {
 			}
 		}
 	}
-	
 	return C;
 }
+
 //n: length of S
 //input one tuple & output two tuple
 set<solutionElement> AllSubsetSumsSharp(int S[], int u, int n) {
@@ -62,6 +61,7 @@ vector<solutionElement> SetToVector(set<solutionElement> object){
 	for(set<solutionElement>::iterator i = object.begin(); i != object.end(); i++){
 		res.push_back(solutionElement((*i).num,(*i).sum));
 	}
+	return res;
 }
 
 vector<int> AllSubsetSums(int S[], int u, int n) {
@@ -90,12 +90,26 @@ vector<int> AllSubsetSums(int S[], int u, int n) {
 		
 		vector<solutionElement> SQ;
 		SQ = SetToVector(AllSubsetSumsSharp(Q1, (int)(u / b), S1.size()));
+		/*debug*/
+		// for(int i = 0; i<SQ.size(); i++){
+		// 	cout<<"SQ1:"<<endl;
+		// 	cout<<SQ[i].sum<<endl;
+		// }
 		
 		//Rl <- {}
 		//int* Rl = new int[l];
 		vector<int> Rl;
-		for(int i = 0; i < l; i++) {
-			Rl.push_back(SQ[i].sum * b + SQ[i].num * l);
+		cout<<l<<endl;
+		if(l == 0)continue;
+		else{
+			for(int i = 0; i < l; i++) {
+				Rl.push_back(SQ[i].sum * b + SQ[i].num * l);
+				//debug
+				cout<<"SQ:"<<endl;
+				cout<<SQ[i].sum<<endl;
+				cout<<"Rl:"<<endl;
+				cout<<Rl[i]<<endl;
+			}
 		}
 		R[l] = Rl;
 	}
@@ -114,5 +128,12 @@ int main()
 	for(set<solutionElement>::iterator i = C.begin(); i!=C.end(); i++){
 		cout<<(*i).num<<" "<<(*i).sum<<endl;
 	}
+
+	vector<int> res = AllSubsetSums(A, 5, 5);
+	cout<<"res2: "<<endl;
+	for(int i=0; i<res.size(); i++){
+		cout<<res[i]<<" ";
+	}
+	cout<<endl;
 		
 }
