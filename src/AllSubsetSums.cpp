@@ -30,14 +30,14 @@ set<solutionElement> OP(set<solutionElement> A, set<solutionElement> B, int u) {
 	return C;
 }
 
-int* OP2(int* A, int* B, int lenA, int lenB, int u) {
-	int lenC = 0;
-	int* C = new int[lenA * lenB + 5];
-	for(int i = 0; i < lenA; i++) {
-		for(int j = 0; j < lenB; j++) {
+vector<int> OP2(vector<int> A, vector<int> B, int u) {
+	// int lenC = 0;
+	// int* C = new int[lenA * lenB + 5];
+	vector<int> C;
+	for(int i = 0; i < A.size(); i++) {
+		for(int j = 0; j < B.size(); j++) {
 			if(A[i] + B[j] <= u) {
-				C[lenC] = A[i] + B[j];
-				lenC++;
+				C.push_back(A[i] + B[j]);
 			}
 		}
 	}
@@ -64,7 +64,7 @@ vector<solutionElement> SetToVector(set<solutionElement> object){
 	}
 }
 
-int* AllSubsetSums(int S[], int u, int n) {
+vector<int> AllSubsetSums(int S[], int u, int n) {
 	int b = sqrt(n * log10((float)n));
 	//int** R = new int*[todo];
 	//int* res = new int[todo];
@@ -92,15 +92,16 @@ int* AllSubsetSums(int S[], int u, int n) {
 		SQ = SetToVector(AllSubsetSumsSharp(Q1, (int)(u / b), S1.size()));
 		
 		//Rl <- {}
-		int* Rl = new int[l];
+		//int* Rl = new int[l];
+		vector<int> Rl;
 		for(int i = 0; i < l; i++) {
-			Rl[i] = SQ[i].sum * b + SQ[i].num * l;
+			Rl.push_back(SQ[i].sum * b + SQ[i].num * l);
 		}
 		R[l] = Rl;
 	}
 	res = R[0];
 	for(int l = 1; l <= b - 1; l++) {
-		res = OP2(res, R[l], u / b, todo, l);
+		res = OP2(res, R[l], l);
 	}
 	return res;
 }
