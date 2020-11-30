@@ -36,9 +36,14 @@ vector<int> OP2(vector<int> A, vector<int> B, int u) {
 	for(int i = 0; i < A.size(); i++) {
 		for(int j = 0; j < B.size(); j++) {
 			if(A[i] + B[j] <= u) {
+				cout<<"Ai:"<<A[i]<<endl;
+				cout<<"Bj:"<<B[j]<<endl;
 				C.push_back(A[i] + B[j]);
 			}
 		}
+	}
+	for(int i=0 ; i<C.size(); i++){
+		cout<<"Ci:"<<C[i]<<endl;
 	}
 	return C;
 }
@@ -65,7 +70,7 @@ vector<solutionElement> SetToVector(set<solutionElement> object){
 }
 
 vector<int> AllSubsetSums(int S[], int u, int n) {
-	int b = sqrt(n * log10((float)n));
+	int b = sqrt(n * log2((float)n));
 	//int** R = new int*[todo];
 	//int* res = new int[todo];
 	vector<vector<int>> R;
@@ -99,23 +104,22 @@ vector<int> AllSubsetSums(int S[], int u, int n) {
 		//Rl <- {}
 		//int* Rl = new int[l];
 		vector<int> Rl;
-		cout<<l<<endl;
+		// cout<<"l:"<<l<<endl;
 		if(l == 0)continue;
 		else{
 			for(int i = 0; i < l; i++) {
 				Rl.push_back(SQ[i].sum * b + SQ[i].num * l);
-				//debug
-				cout<<"SQ:"<<endl;
-				cout<<SQ[i].sum<<endl;
-				cout<<"Rl:"<<endl;
-				cout<<Rl[i]<<endl;
 			}
 		}
-		R[l] = Rl;
+		R.push_back(Rl);
 	}
 	res = R[0];
-	for(int l = 1; l <= b - 1; l++) {
+	for(int l = 0; l < b - 1; l++) {
+		cout<<"123"<<endl;
+		cout<<res[l]<<endl;
 		res = OP2(res, R[l], l);
+		cout<<res[l]<<endl;
+		cout<<"456"<<endl;
 	}
 	return res;
 }
