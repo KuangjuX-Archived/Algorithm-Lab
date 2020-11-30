@@ -18,7 +18,7 @@ struct solutionElement
 	}
 };
 
-//OP: Two Tuple op Two Tuple
+//OP: Two Tuple op Two Tuple.
 set<solutionElement> OP(set<solutionElement> A, set<solutionElement> B, int u)
 {
 	set<solutionElement> C;
@@ -41,15 +41,15 @@ vector<int> OP2(vector<int> A, vector<int> B, int u)
 	// int* C = new int[lenA * lenB + 5];
 	vector<int> C;
 	for (int i = 0; i < A.size(); i++)
+	{
+		for (int j = 0; j < B.size(); j++)
 		{
-			for (int j = 0; j < B.size(); j++)
-				{
-					if (A[i] + B[j] <= u)
-						{
-							C.push_back(A[i] + B[j]);
-						}
-				}
+			if (A[i] + B[j] <= u)
+			{
+				C.push_back(A[i] + B[j]);
+			}
 		}
+	}
 	// for(int i=0 ; i<C.size(); i++){
 	// 	cout<<"Ci:"<<C[i]<<endl;
 	// }
