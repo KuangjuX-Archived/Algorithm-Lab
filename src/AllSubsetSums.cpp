@@ -75,24 +75,28 @@ vector<int> AllSubsetSums(int S[], int u, int n) {
 	//int* res = new int[todo];
 	vector<vector<int>> R;
 	vector<int> res;
-	for(int l = 0; l <= b - 1; l++) {
+	for (int l = 0; l <= b - 1; l++)
+	{
 		//int* Sl = new int[n + 5];
 		//int lenSl = 0;
 		//Sl <- S (cross) {}
 		vector<int> S1;
-		for(int i = 0; i < n; i++) {
-			if(S[i] % b == l % b) {
+		for (int i = 0; i < n; i++)
+		{
+			if (S[i] % b == l % b)
+			{
 				S1.push_back(S[i]);
 			}
 		}
 		//check if type is integer
 		//Ql <- {}
 		//int* Ql = new int[lenSl];
-		int* Q1 = new int[S1.size()+5];
-		for(int i = 0; i < S1.size(); i++){
+		int *Q1 = new int[S1.size() + 5];
+		for (int i = 0; i < S1.size(); i++)
+		{
 			Q1[i] = (S1[i] - l) / b;
 		}
-		
+
 		vector<solutionElement> SQ;
 		SQ = SetToVector(AllSubsetSumsSharp(Q1, (int)(u / b), S1.size()));
 		/*debug*/
@@ -100,26 +104,27 @@ vector<int> AllSubsetSums(int S[], int u, int n) {
 		// 	cout<<"SQ1:"<<endl;
 		// 	cout<<SQ[i].sum<<endl;
 		// }
-		
+
 		//Rl <- {}
 		//int* Rl = new int[l];
 		vector<int> Rl;
 		// cout<<"l:"<<l<<endl;
-		if(l == 0)continue;
-		else{
-			for(int i = 0; i < l; i++) {
-				Rl.push_back(SQ[i].sum * b + SQ[i].num * l);
-			}
+		// if(l == 0)continue; //hasuer comment
+		// else{ //hasuer comment
+		for (int i = 0; i < SQ.size(); i++)
+		{
+			Rl.push_back(SQ[i].sum * b + SQ[i].num * l);
 		}
-		R.push_back(Rl);
+		// } //hasuer comment
+		R.push_back(vector<int>(Rl));
 	}
+
 	res = R[0];
-	for(int l = 0; l < b - 1; l++) {
-		// cout<<"123"<<endl;
-		// cout<<res[l]<<endl;
-		res = OP2(res, R[l], l);
-		// cout<<res[l]<<endl;
-		// cout<<"456"<<endl;
+	for (int l = 0; l < b - 1; l++)
+	{
+		//cout<<R[l]<<endl;
+		res = OP2(res, R[l + 1], u);
+		//cout<<R[l]<<endl;
 	}
 	return res;
 }
