@@ -36,15 +36,15 @@ vector<int> OP2(vector<int> A, vector<int> B, int u) {
 	for(int i = 0; i < A.size(); i++) {
 		for(int j = 0; j < B.size(); j++) {
 			if(A[i] + B[j] <= u) {
-				cout<<"Ai:"<<A[i]<<endl;
-				cout<<"Bj:"<<B[j]<<endl;
+				// cout<<"Ai:"<<A[i]<<endl;
+				// cout<<"Bj:"<<B[j]<<endl;
 				C.push_back(A[i] + B[j]);
 			}
 		}
 	}
-	for(int i=0 ; i<C.size(); i++){
-		cout<<"Ci:"<<C[i]<<endl;
-	}
+	// for(int i=0 ; i<C.size(); i++){
+	// 	cout<<"Ci:"<<C[i]<<endl;
+	// }
 	return C;
 }
 
@@ -115,11 +115,11 @@ vector<int> AllSubsetSums(int S[], int u, int n) {
 	}
 	res = R[0];
 	for(int l = 0; l < b - 1; l++) {
-		cout<<"123"<<endl;
-		cout<<res[l]<<endl;
+		// cout<<"123"<<endl;
+		// cout<<res[l]<<endl;
 		res = OP2(res, R[l], l);
-		cout<<res[l]<<endl;
-		cout<<"456"<<endl;
+		// cout<<res[l]<<endl;
+		// cout<<"456"<<endl;
 	}
 	return res;
 }
