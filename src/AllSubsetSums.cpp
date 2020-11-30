@@ -52,7 +52,7 @@ set<solutionElement> AllSubsetSumsSharp(int S[], int u, int n) {
 		res.insert(solutionElement(1,S[0]));
 		return res;
 	}
-	
+
 	return OP(AllSubsetSumsSharp(S, u, n / 2), AllSubsetSumsSharp(S + n / 2, u, n - n / 2), u);
 }
 
@@ -65,10 +65,10 @@ vector<solutionElement> SetToVector(set<solutionElement> object){
 }
 
 vector<int> AllSubsetSums(int S[], int u, int n) {
-	int b = sqrt(n * log10((float)n));
+	int b = sqrt(n * log2((float)n));
 	//int** R = new int*[todo];
 	//int* res = new int[todo];
-	vector<vector<int>> R;
+	vector< vector<int> > R;
 	vector<int> res;
 	for(int l = 0; l <= b - 1; l++) {
 		//int* Sl = new int[n + 5];
@@ -87,7 +87,7 @@ vector<int> AllSubsetSums(int S[], int u, int n) {
 		for(int i = 0; i < S1.size(); i++){
 			Q1[i] = (S1[i] - l) / b;
 		}
-		
+
 		vector<solutionElement> SQ;
 		SQ = SetToVector(AllSubsetSumsSharp(Q1, (int)(u / b), S1.size()));
 		/*debug*/
@@ -95,7 +95,7 @@ vector<int> AllSubsetSums(int S[], int u, int n) {
 		// 	cout<<"SQ1:"<<endl;
 		// 	cout<<SQ[i].sum<<endl;
 		// }
-		
+
 		//Rl <- {}
 		//int* Rl = new int[l];
 		vector<int> Rl;
@@ -135,5 +135,5 @@ int main()
 		cout<<res[i]<<" ";
 	}
 	cout<<endl;
-		
+
 }
