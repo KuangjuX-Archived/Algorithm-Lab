@@ -1,39 +1,12 @@
-#include <iostream>
-#include <cmath>
-#include <set>
-#include <vector>
-#include <cctype>
-#include <cstdio>
-#include <cstring>
-#include <algorithm>
-using namespace std;
+#include "AllSubsetSums.h"
 
-const int maxn = 2e6 + 5;
+
 const double pi = 3.1415926535898;
 int t, len = 1, l, r[maxn * 2];
+Complex Aa[maxn * 2], Bb[maxn * 2], Cc[maxn * 2];
 
-struct solutionElement
-{
-	int num;
-	int sum;
-	solutionElement(int a, int b) : num(a), sum(b){};
-	bool operator<(const solutionElement &element) const
-	{
-		if (num == element.num)
-			return sum < element.sum;
-		else
-			return num < element.num;
-	}
-};
 
-struct Complex
-{ //复数
-	double x, y;
-	Complex(double t1 = 0, double t2 = 0) { x = t1, y = t2; }
-} Aa[maxn * 2], Bb[maxn * 2], Cc[maxn * 2];
-Complex operator+(Complex a, Complex b) { return Complex(a.x + b.x, a.y + b.y); }
-Complex operator-(Complex a, Complex b) { return Complex(a.x - b.x, a.y - b.y); }
-Complex operator*(Complex a, Complex b) { return Complex(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }
+
 
 void fdft(Complex *a, int n, int flag)
 { //快速将当前多项式从系数表达转换为点值表达
@@ -155,7 +128,7 @@ set<int> FilterRepeatingInt(vector<int> obj)
 vector<int> AllSubsetSums(int S[], int u, int n)
 {
 	int b = sqrt(n * log2((float)n));
-	vector<vector<int>> R;
+	vector<vector<int> > R;
 	vector<int> res;
 	for (int l = 0; l <= b - 1; l++)
 	{
@@ -191,40 +164,4 @@ vector<int> AllSubsetSums(int S[], int u, int n)
 		//cout<<R[l]<<endl;
 	}
 	return res;
-}
-int main()
-{
-	//initialize
-	int u = 10;
-	int A[] = {2,3,6,9,10,4,5};
-	int Size = sizeof(A) / sizeof(*A);
-
-	// test for AllSubsetSumsSharp
-	set<solutionElement> C = AllSubsetSumsSharp(A, u, Size);
-	cout << "The set of all realizable subset sums along with the size of the subset that realizes each sum of S up to " << u << " is: \n";
-	cout << "size    sum\n";
-	cout << "-----------\n";
-	for (set<solutionElement>::iterator i = C.begin(); i != C.end(); i++)
-	{
-		cout << " " << (*i).num << "       " << (*i).sum << endl;
-	}
-
-	//test for AllSubsetSums
-	set<int> res = FilterRepeatingInt(AllSubsetSums(A, u, Size));
-	cout << "The set of all realizable subset sums of S up to " << u << " is: \n";
-	for (set<int>::iterator i = res.begin(); i != res.end(); i++)
-	{
-		cout << *i << " ";
-	}
-	cout << endl;
-
-	//test for OP2
-	// int q[] = {0, 3, 4};
-	// vector<int> a(q, q + 3);
-
-	// int w[] = {0, 2, 6, 5};
-	// vector<int> b(w, w + 4);
-	// vector<int> c = OP2(a, b, 10);
-	system("pause");
-	return 0;
 }
