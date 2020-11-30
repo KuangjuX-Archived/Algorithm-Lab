@@ -8,36 +8,44 @@ struct solutionElement
 {
 	int num;
 	int sum;
-	solutionElement(int a, int b):num(a),sum(b){};
-	bool operator < (const solutionElement& element)const
+	solutionElement(int a, int b) : num(a), sum(b){};
+	bool operator<(const solutionElement &element) const
 	{
-		if(num == element.num)return sum < element.sum;
-		else return num < element.num;
+		if (num == element.num)
+			return sum < element.sum;
+		else
+			return num < element.num;
 	}
 };
 
 //OP: Two Tuple op Two Tuple
-set<solutionElement> OP(set<solutionElement> A, set<solutionElement> B, int u) {
- 	set<solutionElement> C;
-	for(set<solutionElement>::iterator i = A.begin(); i!=A.end(); i++) {
-		for(set<solutionElement>::iterator j = B.begin(); j!=B.end(); j++) {
-			if((*i).sum + (*j).sum <= u) {
-				C.insert(solutionElement((*i).num+(*j).num, (*i).sum+(*j).sum));
+set<solutionElement> OP(set<solutionElement> A, set<solutionElement> B, int u)
+{
+	set<solutionElement> C;
+	for (set<solutionElement>::iterator i = A.begin(); i != A.end(); i++)
+	{
+		for (set<solutionElement>::iterator j = B.begin(); j != B.end(); j++)
+		{
+			if ((*i).sum + (*j).sum <= u)
+			{
+				C.insert(solutionElement((*i).num + (*j).num, (*i).sum + (*j).sum));
 			}
 		}
 	}
 	return C;
 }
 
-vector<int> OP2(vector<int> A, vector<int> B, int u) {
+vector<int> OP2(vector<int> A, vector<int> B, int u)
+{
 	// int lenC = 0;
 	// int* C = new int[lenA * lenB + 5];
 	vector<int> C;
-	for(int i = 0; i < A.size(); i++) {
-		for(int j = 0; j < B.size(); j++) {
-			if(A[i] + B[j] <= u) {
-				// cout<<"Ai:"<<A[i]<<endl;
-				// cout<<"Bj:"<<B[j]<<endl;
+	for (int i = 0; i < A.size(); i++)
+	{
+		for (int j = 0; j < B.size(); j++)
+		{
+			if (A[i] + B[j] <= u)
+			{
 				C.push_back(A[i] + B[j]);
 			}
 		}
@@ -50,26 +58,41 @@ vector<int> OP2(vector<int> A, vector<int> B, int u) {
 
 //n: length of S
 //input one tuple & output two tuple
-set<solutionElement> AllSubsetSumsSharp(int S[], int u, int n) {
-	if(n == 1) {
+set<solutionElement> AllSubsetSumsSharp(int S[], int u, int n)
+{
+	if (n == 1)
+	{
 		set<solutionElement> res;
-		res.insert(solutionElement(0,0));
-		res.insert(solutionElement(1,S[0]));
+		res.insert(solutionElement(0, 0));
+		res.insert(solutionElement(1, S[0]));
 		return res;
 	}
-	
+
 	return OP(AllSubsetSumsSharp(S, u, n / 2), AllSubsetSumsSharp(S + n / 2, u, n - n / 2), u);
 }
 
-vector<solutionElement> SetToVector(set<solutionElement> object){
+vector<solutionElement> SetToVector(set<solutionElement> object)
+{
 	vector<solutionElement> res;
-	for(set<solutionElement>::iterator i = object.begin(); i != object.end(); i++){
-		res.push_back(solutionElement((*i).num,(*i).sum));
+	for (set<solutionElement>::iterator i = object.begin(); i != object.end(); i++)
+	{
+		res.push_back(solutionElement((*i).num, (*i).sum));
 	}
 	return res;
 }
 
-vector<int> AllSubsetSums(int S[], int u, int n) {
+set<int> FilterRepeatingInt(vector<int> obj)
+{
+	set<int> res;
+	for (int i = 0; i < obj.size(); i++)
+	{
+		res.insert(obj[i]);
+	}
+	return res;
+}
+
+vector<int> AllSubsetSums(int S[], int u, int n)
+{
 	int b = sqrt(n * log2((float)n));
 	//int** R = new int*[todo];
 	//int* res = new int[todo];
@@ -130,19 +153,28 @@ vector<int> AllSubsetSums(int S[], int u, int n) {
 }
 int main()
 {
-
+	//initialize
+	int u = 5;
 	int A[] = {1, 2, 3, 4, 5};
-	set<solutionElement> C = AllSubsetSumsSharp(A, 5, 5);
-	cout<<"res: "<<endl;
-	for(set<solutionElement>::iterator i = C.begin(); i!=C.end(); i++){
-		cout<<(*i).num<<" "<<(*i).sum<<endl;
+
+	// test for AllSubsetSumsSharp
+	set<solutionElement> C = AllSubsetSumsSharp(A, 5, u);
+	cout << "The set of all realizable subset sums along with the size of the subset that realizes each sum of S up to " << u << " is: \n";
+	cout << "size    sum\n";
+	cout << "-----------\n";
+	for (set<solutionElement>::iterator i = C.begin(); i != C.end(); i++)
+	{
+		cout << " " <<(*i).num << "       " << (*i).sum << endl;
 	}
 
-	vector<int> res = AllSubsetSums(A, 5, 5);
-	cout<<"res2: "<<endl;
-	for(int i=0; i<res.size(); i++){
-		cout<<res[i]<<" ";
+	// test for AllSubsetSums
+	set<int> res = FilterRepeatingInt(AllSubsetSums(A, 5, 5));
+	cout << "The set of all realizable subset sums of S up to " << u << " is: \n";
+	for (set<int>::iterator i = res.begin(); i != res.end(); i++)
+	{
+		cout << *i << " ";
 	}
-	cout<<endl;
-		
+	cout << endl;
+	system("pause");
+	return 0;
 }
