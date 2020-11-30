@@ -155,10 +155,10 @@ int main()
 {
 	//initialize
 	int u = 5;
-	int A[] = {1, 2, 3, 4, 5};
-
+	int A[] = {1, 2, 3, 4, 5, 6, 9};
+	int Size = sizeof(A) / sizeof(*A);
 	// test for AllSubsetSumsSharp
-	set<solutionElement> C = AllSubsetSumsSharp(A, 5, u);
+	set<solutionElement> C = AllSubsetSumsSharp(A, Size, u);
 	cout << "The set of all realizable subset sums along with the size of the subset that realizes each sum of S up to " << u << " is: \n";
 	cout << "size    sum\n";
 	cout << "-----------\n";
