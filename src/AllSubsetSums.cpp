@@ -2,7 +2,15 @@
 #include <cmath>
 #include <set>
 #include <vector>
+#include <cctype>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
 using namespace std;
+
+const int maxn = 2e6 + 5;
+const double pi = 3.1415926535898;
+int t, len = 1, l, r[maxn * 2];
 
 struct solutionElement
 {
@@ -17,6 +25,36 @@ struct solutionElement
 			return num < element.num;
 	}
 };
+
+struct Complex
+{ //复数
+	double x, y;
+	Complex(double t1 = 0, double t2 = 0) { x = t1, y = t2; }
+} Aa[maxn * 2], Bb[maxn * 2], Cc[maxn * 2];
+Complex operator+(Complex a, Complex b) { return Complex(a.x + b.x, a.y + b.y); }
+Complex operator-(Complex a, Complex b) { return Complex(a.x - b.x, a.y - b.y); }
+Complex operator*(Complex a, Complex b) { return Complex(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }
+
+void fdft(Complex *a, int n, int flag)
+{ //快速将当前多项式从系数表达转换为点值表达
+	for (int i = 0; i < n; ++i)
+		if (i < r[i])
+			swap(a[i], a[r[i]]);
+	for (int mid = 1; mid < n; mid <<= 1)
+	{ //当前区间长度的一半
+		Complex w1(cos(pi / mid), flag * sin(pi / mid)), x, y;
+		for (int j = 0; j < n; j += (mid << 1))
+		{ //j:区间起始点
+			Complex w(1, 0);
+			for (int k = 0; k < mid; ++k, w = w * w1)
+			{ //系数转点值
+				x = a[j + k], y = w * a[j + mid + k];
+				a[j + k] = x + y;
+				a[j + mid + k] = x - y;
+			}
+		}
+	}
+}
 
 //OP: Two Tuple op Two Tuple
 set<solutionElement> OP(set<solutionElement> A, set<solutionElement> B, int u)
@@ -34,30 +72,53 @@ set<solutionElement> OP(set<solutionElement> A, set<solutionElement> B, int u)
 	}
 	return C;
 }
-
-vector<int> OP2(vector<int> A, vector<int> B, int u)
+int GetMaxInt(vector<int> A)
 {
-	// int lenC = 0;
-	// int* C = new int[lenA * lenB + 5];
-	vector<int> C;
+	int Max = 0;
 	for (int i = 0; i < A.size(); i++)
 	{
-		for (int j = 0; j < B.size(); j++)
-		{
-			if (A[i] + B[j] <= u)
-			{
-				C.push_back(A[i] + B[j]);
-			}
+		if (A[i] > Max)
+			Max = A[i];
+	}
+	return Max;
+}
+vector<int> OP2(vector<int> A, vector<int> B, int u)
+{
+	// cout << "A max" <<  GetMaxInt(A) << endl;
+	// cout << "B max" <<  GetMaxInt(B) << endl;
+	vector<int> C;
+	for (int i = 0; i <= GetMaxInt(A); i ++){
+		Aa[i].x = 0;
+	}
+	for (int i = 0; i < A.size(); i ++){
+		Aa[A[i]].x = 1;
+	}
+	
+	for (int i = 0; i < GetMaxInt(B); i ++){
+		Bb[i].x = 0;
+	}
+	for (int i = 0; i < B.size(); i ++){
+		Bb[B[i]].x = 1;
+	}
+	while (len <= GetMaxInt(A) + GetMaxInt(A)){
+		len <<= 1, ++l;	
+		}		  //idft需要至少l1+l2个点值
+	for (int i = 0; i < len; ++i){ //编号的字节长度为l
+		r[i] = (r[i >> 1] >> 1) | ((i & 1) << (l - 1));
+	}
+	fdft(Aa, len, 1);
+	fdft(Bb, len, 1);
+	for (int i = 0; i < len; ++i)
+		Cc[i] = Aa[i] * Bb[i];
+	fdft(Cc, len, -1); //idft
+	for (int i = 0; i <= u; i ++){
+		if( int(Cc[i].x / len + 0.5) != 0 ){
+			C.push_back(i);
 		}
 	}
-	// for(int i=0 ; i<C.size(); i++){
-	// 	cout<<"Ci:"<<C[i]<<endl;
-	// }
 	return C;
 }
 
-//n: length of S
-//input one tuple & output two tuple
 set<solutionElement> AllSubsetSumsSharp(int S[], int u, int n)
 {
 	if (n == 1)
@@ -94,15 +155,10 @@ set<int> FilterRepeatingInt(vector<int> obj)
 vector<int> AllSubsetSums(int S[], int u, int n)
 {
 	int b = sqrt(n * log2((float)n));
-	//int** R = new int*[todo];
-	//int* res = new int[todo];
 	vector<vector<int>> R;
 	vector<int> res;
 	for (int l = 0; l <= b - 1; l++)
 	{
-		//int* Sl = new int[n + 5];
-		//int lenSl = 0;
-		//Sl <- S (cross) {}
 		vector<int> S1;
 		for (int i = 0; i < n; i++)
 		{
@@ -111,9 +167,6 @@ vector<int> AllSubsetSums(int S[], int u, int n)
 				S1.push_back(S[i]);
 			}
 		}
-		//check if type is integer
-		//Ql <- {}
-		//int* Ql = new int[lenSl];
 		int *Q1 = new int[S1.size() + 5];
 		for (int i = 0; i < S1.size(); i++)
 		{
@@ -122,23 +175,11 @@ vector<int> AllSubsetSums(int S[], int u, int n)
 
 		vector<solutionElement> SQ;
 		SQ = SetToVector(AllSubsetSumsSharp(Q1, (int)(u / b), S1.size()));
-		/*debug*/
-		// for(int i = 0; i<SQ.size(); i++){
-		// 	cout<<"SQ1:"<<endl;
-		// 	cout<<SQ[i].sum<<endl;
-		// }
-
-		//Rl <- {}
-		//int* Rl = new int[l];
 		vector<int> Rl;
-		// cout<<"l:"<<l<<endl;
-		// if(l == 0)continue; //hasuer comment
-		// else{ //hasuer comment
 		for (int i = 0; i < SQ.size(); i++)
 		{
 			Rl.push_back(SQ[i].sum * b + SQ[i].num * l);
 		}
-		// } //hasuer comment
 		R.push_back(vector<int>(Rl));
 	}
 
@@ -154,27 +195,36 @@ vector<int> AllSubsetSums(int S[], int u, int n)
 int main()
 {
 	//initialize
-	int u = 5;
-	int A[] = {1, 2, 3, 4, 5};
+	int u = 10;
+	int A[] = {2,3,6,9};
+	int Size = sizeof(A) / sizeof(*A);
 
 	// test for AllSubsetSumsSharp
-	set<solutionElement> C = AllSubsetSumsSharp(A, 5, u);
+	set<solutionElement> C = AllSubsetSumsSharp(A, u, Size);
 	cout << "The set of all realizable subset sums along with the size of the subset that realizes each sum of S up to " << u << " is: \n";
 	cout << "size    sum\n";
 	cout << "-----------\n";
 	for (set<solutionElement>::iterator i = C.begin(); i != C.end(); i++)
 	{
-		cout << " " <<(*i).num << "       " << (*i).sum << endl;
+		cout << " " << (*i).num << "       " << (*i).sum << endl;
 	}
 
-	// test for AllSubsetSums
-	set<int> res = FilterRepeatingInt(AllSubsetSums(A, 5, 5));
+	//test for AllSubsetSums
+	set<int> res = FilterRepeatingInt(AllSubsetSums(A, u, Size));
 	cout << "The set of all realizable subset sums of S up to " << u << " is: \n";
 	for (set<int>::iterator i = res.begin(); i != res.end(); i++)
 	{
 		cout << *i << " ";
 	}
 	cout << endl;
+
+	//test for OP2
+	// int q[] = {0, 3, 4};
+	// vector<int> a(q, q + 3);
+
+	// int w[] = {0, 2, 6, 5};
+	// vector<int> b(w, w + 4);
+	// vector<int> c = OP2(a, b, 10);
 	system("pause");
 	return 0;
 }
