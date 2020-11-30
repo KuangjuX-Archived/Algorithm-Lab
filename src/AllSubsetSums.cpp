@@ -155,7 +155,7 @@ int main()
 {
 	//initialize
 	int u = 5;
-	int A[] = {1, 2, 3, 4, 5, 6, 9};
+	int A[] = {1, 4, 5, 6, 9};
 	int Size = sizeof(A) / sizeof(*A);
 	
 	// test for AllSubsetSumsSharp
