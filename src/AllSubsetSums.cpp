@@ -30,10 +30,10 @@ struct Complex
 { //复数
 	double x, y;
 	Complex(double t1 = 0, double t2 = 0) { x = t1, y = t2; }
-} Aa[maxn * 2], Bb[maxn * 2], Cc[maxn * 2];
-Complex operator+(Complex a, Complex b) { return Complex(a.x + b.x, a.y + b.y); }
-Complex operator-(Complex a, Complex b) { return Complex(a.x - b.x, a.y - b.y); }
-Complex operator*(Complex a, Complex b) { return Complex(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }
+};
+inline Complex operator+(Complex a, Complex b) { return Complex(a.x + b.x, a.y + b.y); }
+inline Complex operator-(Complex a, Complex b) { return Complex(a.x - b.x, a.y - b.y); }
+inline Complex operator*(Complex a, Complex b) { return Complex(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }
 
 void fdft(Complex *a, int n, int flag)
 { //快速将当前多项式从系数表达转换为点值表达
@@ -72,6 +72,7 @@ set<solutionElement> OP(set<solutionElement> A, set<solutionElement> B, int u)
 	}
 	return C;
 }
+
 int GetMaxInt(vector<int> A)
 {
 	int Max = 0;
@@ -82,28 +83,36 @@ int GetMaxInt(vector<int> A)
 	}
 	return Max;
 }
+
 vector<int> OP2(vector<int> A, vector<int> B, int u)
 {
-	// cout << "A max" <<  GetMaxInt(A) << endl;
-	// cout << "B max" <<  GetMaxInt(B) << endl;
+	Complex* Aa = new Complex[maxn*2];
+	Complex* Bb = new Complex[maxn*2];
+	Complex* Cc = new Complex[maxn*2];
 	vector<int> C;
-	for (int i = 0; i <= GetMaxInt(A); i ++){
+	for (int i = 0; i <= GetMaxInt(A); i++)
+	{
 		Aa[i].x = 0;
 	}
-	for (int i = 0; i < A.size(); i ++){
+	for (int i = 0; i < A.size(); i++)
+	{
 		Aa[A[i]].x = 1;
 	}
-	
-	for (int i = 0; i < GetMaxInt(B); i ++){
+
+	for (int i = 0; i < GetMaxInt(B); i++)
+	{
 		Bb[i].x = 0;
 	}
-	for (int i = 0; i < B.size(); i ++){
+	for (int i = 0; i < B.size(); i++)
+	{
 		Bb[B[i]].x = 1;
 	}
-	while (len <= GetMaxInt(A) + GetMaxInt(A)){
-		len <<= 1, ++l;	
-		}		  //idft需要至少l1+l2个点值
-	for (int i = 0; i < len; ++i){ //编号的字节长度为l
+	while (len <= GetMaxInt(A) + GetMaxInt(A))
+	{
+		len <<= 1, ++l;
+	} //idft需要至少l1+l2个点值
+	for (int i = 0; i < len; ++i)
+	{ //编号的字节长度为l
 		r[i] = (r[i >> 1] >> 1) | ((i & 1) << (l - 1));
 	}
 	fdft(Aa, len, 1);
@@ -111,11 +120,17 @@ vector<int> OP2(vector<int> A, vector<int> B, int u)
 	for (int i = 0; i < len; ++i)
 		Cc[i] = Aa[i] * Bb[i];
 	fdft(Cc, len, -1); //idft
-	for (int i = 0; i <= u; i ++){
-		if( int(Cc[i].x / len + 0.5) != 0 ){
+	for (int i = 0; i <= u; i++)
+	{
+		if (int(Cc[i].x / len + 0.5) != 0)
+		{
 			C.push_back(i);
 		}
 	}
+
+	delete [] Aa;
+	delete [] Bb;
+	delete [] Cc;
 	return C;
 }
 
@@ -138,6 +153,17 @@ vector<solutionElement> SetToVector(set<solutionElement> object)
 	for (set<solutionElement>::iterator i = object.begin(); i != object.end(); i++)
 	{
 		res.push_back(solutionElement((*i).num, (*i).sum));
+	}
+	return res;
+}
+
+vector<int> SetIntToVector(set<int> obj)
+{
+	vector<int> res;
+	int j = 0;
+	for (set<int>::iterator iter = obj.begin(); iter != obj.end(); iter++, j++)
+	{
+		res.push_back(*iter);
 	}
 	return res;
 }
@@ -175,28 +201,30 @@ vector<int> AllSubsetSums(int S[], int u, int n)
 
 		vector<solutionElement> SQ;
 		SQ = SetToVector(AllSubsetSumsSharp(Q1, (int)(u / b), S1.size()));
-		vector<int> Rl;
+		set<int> Rl;
 		for (int i = 0; i < SQ.size(); i++)
 		{
-			Rl.push_back(SQ[i].sum * b + SQ[i].num * l);
+			Rl.insert(SQ[i].sum * b + SQ[i].num * l);
 		}
-		R.push_back(vector<int>(Rl));
+		vector<int> r = SetIntToVector(Rl);
+		R.push_back(vector<int>(r));
 	}
 
 	res = R[0];
-	for (int l = 0; l < b - 1; l++)
+	for (int l = 1; l <= b - 1; l++)
 	{
 		//cout<<R[l]<<endl;
-		res = OP2(res, R[l + 1], u);
+		res = OP2(res, R[l], u);
 		//cout<<R[l]<<endl;
 	}
 	return res;
 }
+
 int main()
 {
 	//initialize
 	int u = 10;
-	int A[] = {2,3,6,9};
+	int A[] = {2, 4, 7, 9, 8, 5};
 	int Size = sizeof(A) / sizeof(*A);
 
 	// test for AllSubsetSumsSharp
@@ -218,13 +246,29 @@ int main()
 	}
 	cout << endl;
 
-	//test for OP2
-	// int q[] = {0, 3, 4};
-	// vector<int> a(q, q + 3);
+	// test for OP2
+// 	int qq[] = {0, 9};
+// 	vector<int> a(qq, qq + 2);
+// 	int q[] = {0, 2, 5, 7, 8, 9, 10, 13, 15};
+// 	vector<int> b(q, q + 9);
 
-	// int w[] = {0, 2, 6, 5};
-	// vector<int> b(w, w + 4);
-	// vector<int> c = OP2(a, b, 10);
+// 	int w[] = {0, 4, 7, 9};
+// 	vector<int> c(w, w + 4);
+// 	vector<int> d = OP2(a, c, 10);
+
+// cout << "in D: \n";
+// 	for (int i = 0; i < d.size(); i++)
+// 	{
+// 		cout << d[i] << " ";
+// 	}
+
+// cout << "\nin e: \n";
+
+// 	vector<int> e = OP2(d, b, 10);
+// 	for (int i = 0; i < e.size(); i++)
+// 	{
+// 		cout << e[i] << " ";
+// 	}
 	system("pause");
 	return 0;
 }
