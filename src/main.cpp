@@ -1,10 +1,11 @@
 #include "AllSubsetSums.h"
+using namespace std;
 
 int main()
 {
 	//initialize
 	int u = 10;
-	int A[] = {2,3,6,9,10,4,5};
+	int A[] = {2,3,6,9,10};
 	int Size = sizeof(A) / sizeof(*A);
 
 	// test for AllSubsetSumsSharp

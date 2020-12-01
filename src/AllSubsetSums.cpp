@@ -1,12 +1,9 @@
 #include "AllSubsetSums.h"
-
-
+#define maxn ((int)2e6+5)
 const double pi = 3.1415926535898;
 int t, len = 1, l, r[maxn * 2];
-Complex Aa[maxn * 2], Bb[maxn * 2], Cc[maxn * 2];
 
-
-
+using namespace std;
 
 void fdft(Complex *a, int n, int flag)
 { //快速将当前多项式从系数表达转换为点值表达
@@ -57,8 +54,9 @@ int GetMaxInt(vector<int> A)
 }
 vector<int> OP2(vector<int> A, vector<int> B, int u)
 {
-	// cout << "A max" <<  GetMaxInt(A) << endl;
-	// cout << "B max" <<  GetMaxInt(B) << endl;
+	Complex* Aa = new Complex[maxn*2];
+	Complex* Bb = new Complex[maxn*2];
+	Complex* Cc = new Complex[maxn*2];
 	vector<int> C;
 	for (int i = 0; i <= GetMaxInt(A); i ++){
 		Aa[i].x = 0;
@@ -89,6 +87,9 @@ vector<int> OP2(vector<int> A, vector<int> B, int u)
 			C.push_back(i);
 		}
 	}
+	delete[] Aa;
+	delete[] Bb;
+	delete[] Cc;
 	return C;
 }
 
