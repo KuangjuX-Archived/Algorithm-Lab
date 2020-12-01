@@ -158,11 +158,9 @@ vector<int> AllSubsetSums(int S[], int u, int n)
 	}
 
 	res = R[0];
-	for (int l = 0; l < b - 1; l++)
+	for (int l = 1; l <= b - 1; l++)
 	{
-		//cout<<R[l]<<endl;
-		res = OP2(res, R[l + 1], u);
-		//cout<<R[l]<<endl;
+		res = OP2(res, R[l], u);
 	}
 	return res;
 }

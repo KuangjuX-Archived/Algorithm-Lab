@@ -26,7 +26,7 @@ Now you are in the folder of source code.  You can compile and run by executing 
 
 ```
 mingw32-make
-mingw-32-make run
+mingw32-make run
 ```
 
 ## Author
