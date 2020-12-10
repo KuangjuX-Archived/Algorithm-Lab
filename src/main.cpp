@@ -1,6 +1,11 @@
 #include "AllSubsetSums.h"
+#include <cstdio>
 using namespace std;
 
+// #define DEBUG
+#define TEST
+
+#define MAX (1<<16)
 inline int read(){
    int s=0,w=1;
    char ch=getchar();
@@ -11,10 +16,8 @@ inline int read(){
 
 int main()
 {
-	//initialize
-	// int u = 10;
-	// int A[] = {2,3,6,9,10};
-	// int Size = sizeof(A) / sizeof(*A);
+#ifdef DEBUG
+
 	cout<<"Please enter q to quit and c to continue:\n";
 	char c; 
 	int Size,u;
@@ -51,16 +54,22 @@ int main()
 		cout<<"Please enter q to quit and c to continue:\n";
 		c = getchar();
 	}
+#endif
 
+#ifdef TEST
+
+		FILE* file = fopen("../testcases/example.txt","r");
+		while(!feof(file)){
+			char * buffer = new char[MAX];
+			fgets(buffer,MAX,file);
+			printf("%s\n",buffer);
+		}
+		fclose(file);
+		// cout<<"123"<<endl;
+
+#endif
 	
 
-	//test for OP2
-	// int q[] = {0, 3, 4};
-	// vector<int> a(q, q + 3);
-
-	// int w[] = {0, 2, 6, 5};
-	// vector<int> b(w, w + 4);
-	// vector<int> c = OP2(a, b, 10);
 	cout<<"\033[35mBye~ \033[34mBye~\033[0m \n";
 	system("pause");
 	return 0;

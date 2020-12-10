@@ -1,6 +1,7 @@
 import matplotlib
 import os
 import random
+import subprocess
 
 def generateData(filePath,fileName):
    file = str(filePath + '/' +fileName)
@@ -22,11 +23,20 @@ def generateData(filePath,fileName):
                 f.write(' ')    
             f.write('\n')    
 
+def execAlgorithm(exePath):
+    if os.path.exists(exePath):
+        # rc,out = subprocess.getstatusoutput(exePath)
+        print(subprocess.getstatusoutput(exePath))
+
 
 def main():
-    filePath = 'testcases'
-    fileName = 'example.txt'
-    generateData(filePath,fileName)
+    # filePath = 'testcases'
+    # fileName = 'example.txt'
+    # generateData(filePath,fileName)
+    exePath = '.\src\\main.exe'
+    # execAlgorithm(exePath)
+    os.system(exePath)
+    exit()
 
 if __name__ == '__main__':
     main()
