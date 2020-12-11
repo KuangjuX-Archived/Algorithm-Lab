@@ -6,9 +6,9 @@ import subprocess
 def generateData(filePath,fileName):
    file = str(filePath + '/' +fileName)
    with open(file ,'w+') as f:
-        for i in range(1,100):
+        for i in range(10,20):
             flag = []
-            up = random.randint(1,10000)
+            up = random.randint(1,100)
             f.write(str(i)+'\n')
             f.write(str(up)+'\n')
             for j in range(i):
