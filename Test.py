@@ -9,18 +9,15 @@ def generateData(filePath,fileName):
         for i in range(1,100):
             flag = []
             up = random.randint(1,10000)
-            f.write(str(up))
-            f.write(' ')
+            f.write(str(i)+'\n')
+            f.write(str(up)+'\n')
             for j in range(i):
-                print(up)
                 element = random.randint(0,up)
-                print(flag)
                 while element in flag:
                     element = random.randint(i,up)
 
                 flag.append(element)
-                f.write(str(element))
-                f.write(' ')    
+                f.write(str(element)+' ')    
             f.write('\n')    
 
 def execAlgorithm(exePath):
@@ -30,13 +27,12 @@ def execAlgorithm(exePath):
 
 
 def main():
-    # filePath = 'testcases'
-    # fileName = 'example.txt'
-    # generateData(filePath,fileName)
-    exePath = '.\src\\main.exe'
+    filePath = 'testcases'
+    fileName = 'example.txt'
+    generateData(filePath,fileName)
+    # exePath = '.\src\\main.exe'
     # execAlgorithm(exePath)
-    os.system(exePath)
-    exit()
+    # os.system(exePath)
 
 if __name__ == '__main__':
     main()

@@ -1,5 +1,6 @@
 #include "AllSubsetSums.h"
 #include <cstdio>
+#include <sstream>
 using namespace std;
 
 // #define DEBUG
@@ -12,6 +13,16 @@ inline int read(){
    while(ch<'0'||ch>'9'){if(ch=='-')w=-1;ch=getchar();}
    while(ch>='0'&&ch<='9') s=s*10+ch-'0',ch=getchar();
    return s*w;
+}
+
+string readTillSpace(char* buffer){
+	string s;
+	int i=0;
+	while(buffer[i]!=' '){
+		s+=buffer[i];
+		i++;
+	}
+	return s;
 }
 
 int main()
@@ -59,13 +70,37 @@ int main()
 #ifdef TEST
 
 		FILE* file = fopen("../testcases/example.txt","r");
+		// freopen("../testcases/result.txt","w+",stdout);
 		while(!feof(file)){
-			char * buffer = new char[MAX];
-			fgets(buffer,MAX,file);
-			printf("%s\n",buffer);
+			// char * buffer = new char[MAX];
+			// fgets(buffer,MAX,file);
+			// printf("%s",buffer);
+			for(int i=0; i<3; i++){
+				char* size = new char[4];
+				int SIZE = atoi(fgets(size,4,file));
+				char* up = new char[10];
+				int UP = atoi(fgets(up,10,file));
+				char* buffer = new char[MAX];
+				fgets(buffer,MAX,file);
+				// printf("%d\n",SIZE);
+				// printf("%d\n",UP);
+				// printf("%s\n",buffer);
+				int* S = new int[SIZE+5];
+				std::istringstream stringStream(buffer);
+
+				for (size_t i = 0; (i < SIZE) && (stringStream >> S[i]); ++i) {}
+				for(int i = 0;i<SIZE;i++){printf("%d",S[i]);}
+				printf("\n");
+				set<int> res = FilterRepeatingInt(AllSubsetSums(S,UP,SIZE));
+				cout << "The set of all realizable subset sums of S up to " << UP << " is: \n";
+				for (set<int>::iterator i = res.begin(); i != res.end(); i++)
+				{
+					cout << *i << " ";
+				}
+				cout << endl;
+			}
 		}
 		fclose(file);
-		// cout<<"123"<<endl;
 
 #endif
 	
