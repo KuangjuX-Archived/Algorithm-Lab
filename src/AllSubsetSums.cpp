@@ -103,6 +103,12 @@ set<solutionElement> AllSubsetSumsSharp(int S[], int u, int n)
 		return res;
 	}
 
+	if(n == 0){
+		set<solutionElement> res;
+		res.insert(solutionElement(0,0));
+		return res;
+	}
+
 	return OP(AllSubsetSumsSharp(S, u, n / 2), AllSubsetSumsSharp(S + n / 2, u, n - n / 2), u);
 }
 
@@ -126,10 +132,22 @@ set<int> FilterRepeatingInt(vector<int> obj)
 	return res;
 }
 
+vector<int> SetIntToVector(set<int> obj)
+{
+	vector<int> res;
+	int j = 0;
+	for (set<int>::iterator iter = obj.begin(); iter != obj.end(); iter++, j++)
+	{
+		res.push_back(*iter);
+	}
+	return res;
+}
+
 vector<int> AllSubsetSums(int S[], int u, int n)
 {
+	int INVALIDSIZE = 0;
 	int b = sqrt(n * log2((float)n));
-	vector<vector<int> > R;
+	vector<vector<int>> R;
 	vector<int> res;
 	for (int l = 0; l <= b - 1; l++)
 	{
@@ -141,27 +159,39 @@ vector<int> AllSubsetSums(int S[], int u, int n)
 				S1.push_back(S[i]);
 			}
 		}
-		
-		int *Q1 = new int[S1.size() + 5];
-		for (int i = 0; i < S1.size(); i++)
+		if (S1.size() == 0)
 		{
-			Q1[i] = (S1[i] - l) / b;
+			INVALIDSIZE++;
 		}
+		else
+		{
+			int *Q1 = new int[S1.size() + 5];
+			for (int i = 0; i < S1.size(); i++)
+			{
+				Q1[i] = (S1[i] - l) / b;
+			}
 
-		vector<solutionElement> SQ;
-		SQ = SetToVector(AllSubsetSumsSharp(Q1, (int)(u / b), S1.size()));
-		vector<int> Rl;
-		for (int i = 0; i < SQ.size(); i++)
-		{
-			Rl.push_back(SQ[i].sum * b + SQ[i].num * l);
+			vector<solutionElement> SQ;
+
+			SQ = SetToVector(AllSubsetSumsSharp(Q1, (int)(u / b), S1.size()));
+
+			set<int> Rl;
+			for (int i = 0; i < SQ.size(); i++)
+			{
+				Rl.insert(SQ[i].sum * b + SQ[i].num * l);
+			}
+			vector<int> r = SetIntToVector(Rl);
+			R.push_back(vector<int>(r));
 		}
-		R.push_back(vector<int>(Rl));
 	}
 
 	res = R[0];
-	for (int l = 1; l <= b - 1; l++)
+	for (int l = 1; l <= b - 1 - INVALIDSIZE; l++)
 	{
+		//cout<<R[l]<<endl;
 		res = OP2(res, R[l], u);
+		//cout<<R[l]<<endl;
 	}
 	return res;
 }
+

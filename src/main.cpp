@@ -3,8 +3,8 @@
 #include <sstream>
 using namespace std;
 
-#define DEBUG
-// #define TEST
+// #define DEBUG
+#define TEST
 
 #define MAX (1<<16)
 inline int read(){
@@ -70,11 +70,8 @@ int main()
 #ifdef TEST
 
 		FILE* file = fopen("../testcases/example.txt","r");
-		// freopen("../testcases/result.txt","w+",stdout);
+		freopen("../testcases/result.txt","w+",stdout);
 		while(!feof(file)){
-			// char * buffer = new char[MAX];
-			// fgets(buffer,MAX,file);
-			// printf("%s",buffer);
 			for(int i=0; i<3; i++){
 				char* size = new char[4];
 				int SIZE = atoi(fgets(size,4,file));
@@ -82,22 +79,20 @@ int main()
 				int UP = atoi(fgets(up,10,file));
 				char* buffer = new char[MAX];
 				fgets(buffer,MAX,file);
-				// printf("%d\n",SIZE);
-				// printf("%d\n",UP);
-				// printf("%s\n",buffer);
 				int* S = new int[SIZE+5];
 				std::istringstream stringStream(buffer);
 
 				for (size_t i = 0; (i < SIZE) && (stringStream >> S[i]); ++i) {}
-				for(int i = 0;i<SIZE;i++){printf("%d ",S[i]);}
-				printf("\n");
+				// printf("The number of the set:%d\n",SIZE);
+				cout<<SIZE<<endl;
+				cout<<UP<<endl;
 				set<int> res = FilterRepeatingInt(AllSubsetSums(S,UP,SIZE));
-				cout << "The set of all realizable subset sums of S up to " << UP << " is: \n";
+				// cout << "The set of all realizable subset sums of S up to " << UP << " is: \n";
 				for (set<int>::iterator i = res.begin(); i != res.end(); i++)
 				{
-					cout << *i << " ";
+					cout<<*i<<" ";
 				}
-				cout << endl;
+				cout<<endl;
 			}
 		}
 		fclose(file);
