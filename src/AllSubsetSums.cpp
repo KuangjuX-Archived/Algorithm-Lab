@@ -131,10 +131,8 @@ vector<int> AllSubsetSums(int S[], int u, int n)
 	int b = sqrt(n * log2((float)n));
 	vector<vector<int> > R;
 	vector<int> res;
-	cout<<"-3-2-1"<<endl;
 	for (int l = 0; l <= b - 1; l++)
 	{
-		cout<<"-3-2-1"<<endl;
 		vector<int> S1;
 		for (int i = 0; i < n; i++)
 		{
@@ -151,9 +149,7 @@ vector<int> AllSubsetSums(int S[], int u, int n)
 		}
 
 		vector<solutionElement> SQ;
-		cout<<"123"<<endl;
 		SQ = SetToVector(AllSubsetSumsSharp(Q1, (int)(u / b), S1.size()));
-		cout<<"456"<<endl;
 		vector<int> Rl;
 		for (int i = 0; i < SQ.size(); i++)
 		{

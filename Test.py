@@ -8,7 +8,7 @@ def generateData(filePath,fileName):
    with open(file ,'w+') as f:
         for i in range(10,20):
             flag = []
-            up = random.randint(1,100)
+            up = random.randint(100,200)
             f.write(str(i)+'\n')
             f.write(str(up)+'\n')
             for j in range(i):

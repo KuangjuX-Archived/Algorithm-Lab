@@ -3,8 +3,8 @@
 #include <sstream>
 using namespace std;
 
-// #define DEBUG
-#define TEST
+#define DEBUG
+// #define TEST
 
 #define MAX (1<<16)
 inline int read(){
@@ -89,7 +89,7 @@ int main()
 				std::istringstream stringStream(buffer);
 
 				for (size_t i = 0; (i < SIZE) && (stringStream >> S[i]); ++i) {}
-				for(int i = 0;i<SIZE;i++){printf("%d",S[i]);}
+				for(int i = 0;i<SIZE;i++){printf("%d ",S[i]);}
 				printf("\n");
 				set<int> res = FilterRepeatingInt(AllSubsetSums(S,UP,SIZE));
 				cout << "The set of all realizable subset sums of S up to " << UP << " is: \n";
