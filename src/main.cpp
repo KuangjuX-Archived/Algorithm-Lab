@@ -1,12 +1,15 @@
 #include "AllSubsetSums.h"
 #include <cstdio>
 #include <sstream>
+#include <sys/time.h>
+#include <ctime>
 using namespace std;
 
 // #define DEBUG
 #define TEST
 
 #define MAX (1<<16)
+#define TIMECOVERT ((double)1e6)
 inline int read(){
    int s=0,w=1;
    char ch=getchar();
@@ -70,7 +73,7 @@ int main()
 #ifdef TEST
 
 		FILE* file = fopen("../testcases/example.txt","r");
-		freopen("../testcases/result.txt","w+",stdout);
+		freopen("../testcases/time.txt","w+",stdout);
 		while(!feof(file)){
 			for(int i=0; i<3; i++){
 				char* size = new char[4];
@@ -84,15 +87,27 @@ int main()
 
 				for (size_t i = 0; (i < SIZE) && (stringStream >> S[i]); ++i) {}
 				// printf("The number of the set:%d\n",SIZE);
-				cout<<SIZE<<endl;
-				cout<<UP<<endl;
+				struct timeval start_time, end_time;
+				// cout<<SIZE<<endl;
+				// cout<<UP<<endl;
+				// printf("%d ",SIZE);
+				gettimeofday(&start_time,NULL);
 				set<int> res = FilterRepeatingInt(AllSubsetSums(S,UP,SIZE));
+				gettimeofday(&end_time,NULL);
+				long long int start,end;
+				start = start_time.tv_sec*TIMECOVERT+start_time.tv_usec;
+				end = end_time.tv_sec*TIMECOVERT+end_time.tv_usec;
+				long double span_time;
+				span_time = (end-start)/(TIMECOVERT);
+				// printf("%d %.6LFs\n", SIZE, span_time);
+				cout<<SIZE<<" "<<span_time<<endl;
+
 				// cout << "The set of all realizable subset sums of S up to " << UP << " is: \n";
-				for (set<int>::iterator i = res.begin(); i != res.end(); i++)
-				{
-					cout<<*i<<" ";
-				}
-				cout<<endl;
+			// 	for (set<int>::iterator i = res.begin(); i != res.end(); i++)
+			// 	{
+			// 		cout<<*i<<" ";
+			// 	}
+			// 	cout<<endl;
 			}
 		}
 		fclose(file);
