@@ -208,7 +208,8 @@ set<solutionElement> OP(set<solutionElement> A, set<solutionElement> B, int u)
 		delete[] arrayB[i];
 	delete[] arrayB;
 	for(int i=0; i < MaxNum; i++)
-	delete[] arrayC[i];
+		delete[] arrayC[i];
+		
 	delete[] arrayC;
 	delete[] Aa;
 	delete[] r;
