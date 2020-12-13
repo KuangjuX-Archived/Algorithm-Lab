@@ -5,8 +5,9 @@
 #include <ctime>
 using namespace std;
 
-// #define DEBUG
-#define TEST
+#define DEBUG
+// #define TEST
+
 
 #define MAX (1<<16)
 #define TIMECOVERT ((double)1e6)
@@ -28,10 +29,7 @@ string readTillSpace(char* buffer){
 	return s;
 }
 
-int main()
-{
-#ifdef DEBUG
-
+inline void Debug(){
 	cout<<"Please enter q to quit and c to continue:\n";
 	char c; 
 	int Size,u;
@@ -68,11 +66,10 @@ int main()
 		cout<<"Please enter q to quit and c to continue:\n";
 		c = getchar();
 	}
-#endif
+}
 
-#ifdef TEST
-
-		FILE* file = fopen("../testcases/example.txt","r");
+inline void Test(){
+	FILE* file = fopen("../testcases/example.txt","r");
 		freopen("../testcases/time.txt","w+",stdout);
 		while(!feof(file)){
 			for(int i=0; i<3; i++){
@@ -92,7 +89,8 @@ int main()
 				// cout<<UP<<endl;
 				// printf("%d ",SIZE);
 				gettimeofday(&start_time,NULL);
-				set<int> res = FilterRepeatingInt(AllSubsetSums(S,UP,SIZE));
+				// set<int> res = FilterRepeatingInt(AllSubsetSums(S,UP,SIZE));
+				auto res = FilterRepeatingInt(AllSubsetSums(S,UP,SIZE));
 				gettimeofday(&end_time,NULL);
 				long long int start,end;
 				start = start_time.tv_sec*TIMECOVERT+start_time.tv_usec;
@@ -103,19 +101,25 @@ int main()
 				cout<<SIZE<<" "<<span_time<<endl;
 
 				// cout << "The set of all realizable subset sums of S up to " << UP << " is: \n";
-			// 	for (set<int>::iterator i = res.begin(); i != res.end(); i++)
-			// 	{
-			// 		cout<<*i<<" ";
-			// 	}
-			// 	cout<<endl;
+				// 	for (set<int>::iterator i = res.begin(); i != res.end(); i++)
+				// 	{
+				// 		cout<<*i<<" ";
+				// 	}
+				// 	cout<<endl;
 			}
 		}
 		fclose(file);
+}
 
+int main()
+{
+#ifdef DEBUG
+	Debug();
 #endif
-	
 
-	cout<<"\033[35mBye~ \033[34mBye~\033[0m \n";
+#ifdef TEST
+	Test();
+#endif
 	system("pause");
 	return 0;
 }

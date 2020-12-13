@@ -40,13 +40,21 @@ inline Complex operator+(Complex a, Complex b) { return Complex(a.x + b.x, a.y +
 inline Complex operator-(Complex a, Complex b) { return Complex(a.x - b.x, a.y - b.y); }
 inline Complex operator*(Complex a, Complex b) { return Complex(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); }
 
-void fdft(Complex *a, int n, int flag);
+// Helper Function
 int GetMaxInt(vector<int> A);
+int GetMaxSum(set<solutionElement> A);
+int GetMaxNum(set<solutionElement> A);
+void FFT(Complex *a, int n, int flag,int *order);
+vector<solutionElement> SetToVector(set<solutionElement> object);
+set<int> FilterRepeatingInt(vector<int> obj);
+
+// Compute Function
 set<solutionElement> OP(set<solutionElement> A, set<solutionElement> B, int u);
 vector<int> OP2(vector<int> A, vector<int> B, int u);
+
+// Core Function
 set<solutionElement> AllSubsetSumsSharp(int S[], int u, int n);
-vector<solutionElement> SetToVector(set<solutionElement> object);
 vector<int> AllSubsetSums(int S[], int u, int n);
-set<int> FilterRepeatingInt(vector<int> obj);
+
 
 #endif
