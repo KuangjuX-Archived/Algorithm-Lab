@@ -8,7 +8,7 @@ def generateData(filePath,fileName):
    with open(file ,'w+') as f:
         for i in range(10,100):
             flag = []
-            up = random.randint(0,10000)
+            up = random.randint(10,10000)
             f.write(str(i)+'\n')
             f.write(str(up)+'\n')
             for j in range(i):
@@ -27,7 +27,7 @@ def generateData(filePath,fileName):
 
 def dataVisual(path):
     data = np.loadtxt(path)
-    x, _= data.shape
+    x, _ = data.shape
     plt.plot([data[i][0] for i in range(x)], [data[i][1] for i in range(x)])
     plt.show()
    

@@ -340,9 +340,7 @@ vector<int> AllSubsetSums(int S[], int u, int n)
 				Q1[i] = (S1[i] - l) / b;
 			}
 
-			vector<solutionElement> SQ;
-
-			SQ = SetToVector(AllSubsetSumsSharp(Q1, (int)(u / b), S1.size()));
+			auto SQ = SetToVector(AllSubsetSumsSharp(Q1, (int)(u / b), S1.size()));
 
 			set<int> Rl;
 			for (int i = 0; i < SQ.size(); i++)
@@ -357,9 +355,7 @@ vector<int> AllSubsetSums(int S[], int u, int n)
 	res = R[0];
 	for (int l = 1; l <= b - 1 - INVALIDSIZE; l++)
 	{
-		//cout<<R[l]<<endl;
 		res = OP2(res, R[l], u);
-		//cout<<R[l]<<endl;
 	}
 	return res;
 }

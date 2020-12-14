@@ -5,8 +5,10 @@
 #include <ctime>
 using namespace std;
 
-#define DEBUG
-// #define TEST
+// #define DEBUG
+#define TEST
+#define TIME_TEST
+// #define RES_TEST
 
 
 #define MAX (1<<16)
@@ -70,9 +72,15 @@ inline void Debug(){
 
 inline void Test(){
 	FILE* file = fopen("../testcases/example.txt","r");
-		freopen("../testcases/time.txt","w+",stdout);
-		while(!feof(file)){
-			for(int i=0; i<3; i++){
+#ifdef TIME_TEST	
+	freopen("../testcases/time.txt","w+",stdout);
+#endif
+
+#ifdef RES_TEST
+	freopen("../testcases/result.txt","w+",stdout);
+#endif	
+		while(true){
+			for(int i=0; i < 3; i++){
 				char* size = new char[4];
 				int SIZE = atoi(fgets(size,4,file));
 				char* up = new char[10];
@@ -82,14 +90,10 @@ inline void Test(){
 				int* S = new int[SIZE+5];
 				std::istringstream stringStream(buffer);
 
+#ifdef TIME_TEST
 				for (size_t i = 0; (i < SIZE) && (stringStream >> S[i]); ++i) {}
-				// printf("The number of the set:%d\n",SIZE);
 				struct timeval start_time, end_time;
-				// cout<<SIZE<<endl;
-				// cout<<UP<<endl;
-				// printf("%d ",SIZE);
 				gettimeofday(&start_time,NULL);
-				// set<int> res = FilterRepeatingInt(AllSubsetSums(S,UP,SIZE));
 				auto res = FilterRepeatingInt(AllSubsetSums(S,UP,SIZE));
 				gettimeofday(&end_time,NULL);
 				long long int start,end;
@@ -97,16 +101,22 @@ inline void Test(){
 				end = end_time.tv_sec*TIMECOVERT+end_time.tv_usec;
 				long double span_time;
 				span_time = (end-start)/(TIMECOVERT);
-				// printf("%d %.6LFs\n", SIZE, span_time);
 				cout<<SIZE<<" "<<span_time<<endl;
+#endif
 
-				// cout << "The set of all realizable subset sums of S up to " << UP << " is: \n";
-				// 	for (set<int>::iterator i = res.begin(); i != res.end(); i++)
-				// 	{
-				// 		cout<<*i<<" ";
-				// 	}
-				// 	cout<<endl;
+#ifdef RES_TEST
+				cout<<SIZE<<endl;
+				cout<<UP<<endl;
+				cout << "The set of all realizable subset sums of S up to " << UP << " is: \n";
+				auto res = FilterRepeatingInt(AllSubsetSums(S,UP,SIZE));
+				for (set<int>::iterator i = res.begin(); i != res.end(); i++)
+				{
+					cout<<*i<<" ";
+				}
+				cout<<endl;
+#endif 				
 			}
+			if(feof(file))break;
 		}
 		fclose(file);
 }
