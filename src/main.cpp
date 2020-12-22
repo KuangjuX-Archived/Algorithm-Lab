@@ -5,9 +5,9 @@
 #include <ctime>
 using namespace std;
 
-// #define DEBUG
-#define TEST
-#define TIME_TEST
+#define DEBUG
+// #define TEST
+// #define TIME_TEST
 // #define RES_TEST
 
 
